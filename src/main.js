@@ -10,7 +10,7 @@ import store from './nstore'
 
 import create from "@/utils/create";
 import Notice from "@/components/Notice.vue";
-
+import { NElement } from '@/components/nform/index.js'
 
 Vue.config.productionTip = false
 // 事件总线
@@ -20,7 +20,7 @@ Vue.prototype.$notice = function(props) {
   const notice = create(Notice, props);
   notice.show();
 }
-
+Vue.use(NElement)
 new Vue({
   router,
   store,

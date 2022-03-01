@@ -1,0 +1,35 @@
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<div id="app">
+</div>
+
+<script src="./nvue.js"></script>
+<script>
+  const app = new NVue({
+    el: '#app',
+    data: {
+      counter: 1
+    },
+    render(h) {
+      // return h('h3',null, this.counter+'')
+      return h('h3', null, [
+        h('p',null,this.counter+''),
+        h('p',null,this.counter+''),
+        h('p',null,this.counter+'')
+      ])
+    },
+    methods: {
+      add() {
+        this.counter++
+        console.log(this.rules.rule)
+      },
+      addRule() {
+        this.rules.counter++
+        console.log(this.rules.counter)
+      }
+    },
+  })
+
+  setInterval(() => {
+    app.counter++
+  }, 1000);
+</script>

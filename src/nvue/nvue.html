@@ -1,0 +1,48 @@
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<style>
+  .add {
+    width: 100%;
+    cursor: pointer;
+    background: #f00;
+  }
+</style>
+<div id="app">
+  <p @click="add" class="add">{{counter}}</p>
+  <p>{{counter}}</p>
+  <p n-text="counter"></p>
+  <p n-html="desc"></p>
+  <input type="text" n-model="counter">
+  <p n-show="isShow">{{keyword}}</p>
+  <p @click="addRule">{{rules.counter}}</p>
+</div>
+
+<script src="./nvue.js"></script>
+<script>
+  const app = new NVue({
+    el: '#app',
+    data: {
+      counter: 1,
+      desc: '<span style="color:red">村长真棒</span>',
+      keyword: '我们看海去',
+      isShow: true,
+      rules: {
+        counter: 100
+      }
+    },
+    methods: {
+      add() {
+        this.counter++
+        console.log(this.rules.rule)
+      },
+      addRule() {
+        this.rules.counter++
+        console.log(this.rules.counter)
+      }
+    },
+  })
+
+  // app.counter = 100
+  // setInterval(() => {
+  //   app.counter++
+  // }, 1000);
+</script>
