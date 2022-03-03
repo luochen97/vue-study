@@ -13,16 +13,16 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    add({commit}) {
+    add({ commit }) {
       setTimeout(() => {
         commit('add')
-      }, 1000);
+      }, 1000)
     }
   },
   getters: {
-    doubleCounter: state => {
+    doubleCounter: (state) => {
       console.log('ddd')
-      return state.counter * 2;
+      return state.counter * 2
     }
   }
 })

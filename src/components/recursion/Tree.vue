@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import TreeNode from "@/components/recursion/TreeNode.vue";
+import TreeNode from '@/components/recursion/TreeNode.vue'
 export default {
   props: {
     data: {
@@ -16,7 +16,7 @@ export default {
   components: {
     TreeNode
   }
-};
+}
 </script>
 
 <style scoped>

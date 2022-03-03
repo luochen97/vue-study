@@ -13,12 +13,11 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    add({commit}) {
+    add({ commit }) {
       setTimeout(() => {
         commit('add')
-      }, 1000);
+      }, 1000)
     }
   },
-  modules: {
-  }
+  modules: {}
 })

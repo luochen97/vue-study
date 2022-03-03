@@ -5,9 +5,11 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "prepare": "husky install"
   },
   "dependencies": {
+    "@vue/eslint-config-prettier": "^7.0.0",
     "async-validator": "^1.12.2",
     "core-js": "^3.4.3",
     "element-ui": "^2.4.5",
@@ -23,29 +25,19 @@
     "@vue/cli-service": "^4.1.0",
     "babel-eslint": "^10.0.3",
     "eslint": "^5.16.0",
+    "eslint-plugin-prettier": "3.1.2",
     "eslint-plugin-vue": "^5.0.0",
+    "husky": "^7.0.4",
+    "lint-staged": "^12.3.4",
     "vue-cli-plugin-element": "^1.0.1",
-    "vue-template-compiler": "^2.6.10"
-  },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
-    },
-    "extends": [
-      "plugin:vue/essential",
-      "eslint:recommended"
-    ],
-    "rules": {
-      "vue/no-unused-components": "off",
-      "no-console": "off"
-    },
-    "parserOptions": {
-      "parser": "babel-eslint"
-    }
+    "vue-template-compiler": "^2.6.10",
+    "prettier": "2.4.1"
   },
   "browserslist": [
     "> 1%",
     "last 2 versions"
-  ]
+  ],
+  "lint-staged": {
+    "*.{js,css,md,ts,tsx}": "prettier --write"
+  }
 }

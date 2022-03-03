@@ -1,6 +1,6 @@
 <template>
   <div>
-    <input :type="type" :value="value" v-bind="$attrs" v-on="inputListeners"/>
+    <input :type="type" :value="value" v-bind="$attrs" v-on="inputListeners" />
   </div>
 </template>
 <script>
@@ -21,7 +21,8 @@ export default {
     inputListeners: function () {
       var vm = this
       // `Object.assign` 将所有的对象合并为一个新对象
-      return Object.assign({},
+      return Object.assign(
+        {},
         // 我们从父级添加所有的监听器
         this.$listeners,
         // 然后我们添加自定义监听器，

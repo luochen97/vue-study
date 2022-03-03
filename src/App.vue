@@ -1,22 +1,29 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/">Home</router-link> |
+      <router-link to="/">Home</router-link>
+      |
       <router-link to="/about">About</router-link>
     </div>
-     <p @click="$store.commit('add')">{{$store.state.counter}}</p>
-     <p @click="$store.dispatch('add')">async: {{$store.state.counter}}</p>
-     <p>getters: {{$store.getters.doubleCounter}}</p>
-     <button @click="jumpPage">跳转页面</button>
-     <nForm ref="form" :model="formData" :rules="rules">
+    <p @click="$store.commit('add')">{{ $store.state.counter }}</p>
+    <p @click="$store.dispatch('add')">async: {{ $store.state.counter }}</p>
+    <p>getters: {{ $store.getters.doubleCounter }}</p>
+    <button @click="jumpPage">跳转页面</button>
+    <nForm ref="form" :model="formData" :rules="rules">
       <nFormItem label="用户名：" prop="userName">
-        <n-input v-model="formData.userName" title="sfdsdf" placeholder="阿瑟费说的过房东说" @blur="blurEvent"/> {{input}}
+        <n-input
+          v-model="formData.userName"
+          title="sfdsdf"
+          placeholder="阿瑟费说的过房东说"
+          @blur="blurEvent"
+        />
+        {{ input }}
       </nFormItem>
       <nFormItem>
         <button @click="validate">校验</button>
       </nFormItem>
-     </nForm>
-     
+    </nForm>
+
     <!-- <p @click="$store.commit('add')">{{ $store.state.counter }}</p>
     <p @click="$store.dispatch('add')">async:{{ $store.state.counter }}</p> -->
     <!-- <p>{{ $store.getters.doubleCounter }}</p> -->
@@ -38,8 +45,10 @@ export default {
       rules: {
         userName: [
           {
-            required: true, message: '用户名为必填项！'
-          },{
+            required: true,
+            message: '用户名为必填项！'
+          },
+          {
             validator: this.validateUser
           }
         ]
@@ -52,16 +61,16 @@ export default {
     }
   },
   methods: {
-    validateUser(rule,value,callBack) {
-      if(!/^\d*$/.test(value)) {
+    validateUser(rule, value, callBack) {
+      if (!/^\d*$/.test(value)) {
         callBack('用户名必须为数字')
         return
       }
       callBack()
     },
     validate() {
-      this.$refs.form.validate(isValidate => {
-        if(isValidate) {
+      this.$refs.form.validate((isValidate) => {
+        if (isValidate) {
           console.log('sumbit success')
         } else {
           console.log('sumbit error')
@@ -88,7 +97,7 @@ export default {
 </script>
 <style>
 #app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;

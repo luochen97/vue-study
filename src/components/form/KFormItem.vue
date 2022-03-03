@@ -10,47 +10,47 @@
 </template>
 
 <script>
-import Validator from "async-validator";
+import Validator from 'async-validator'
 
 export default {
-  inject: ["form"],
+  inject: ['form'],
   props: {
     label: {
-      type: String,
+      type: String
     },
-    prop: String,
+    prop: String
   },
   data() {
     return {
-      error: "",
-    };
+      error: ''
+    }
   },
   mounted() {
-    this.$on("validate", () => {
-      this.validate();
-    });
+    this.$on('validate', () => {
+      this.validate()
+    })
   },
   methods: {
     validate() {
       // 单项校验
-      const value = this.form.model[this.prop];
-      const rules = this.form.rules[this.prop];
+      const value = this.form.model[this.prop]
+      const rules = this.form.rules[this.prop]
 
-      const validator = new Validator({ [this.prop]: rules });
+      const validator = new Validator({ [this.prop]: rules })
       return new Promise((resolve, reject) => {
         validator.validate({ [this.prop]: value }, (errors) => {
           if (errors) {
-            this.error = errors[0].message;
+            this.error = errors[0].message
             reject()
           } else {
-            this.error = "";
+            this.error = ''
             resolve()
           }
-        });
-      });
-    },
-  },
-};
+        })
+      })
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped></style>

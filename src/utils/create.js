@@ -13,11 +13,10 @@ export default function create(Component, props) {
   document.body.appendChild(comp.$el)
 
   // 4.淘汰方法
-  comp.remove = function() {
+  comp.remove = function () {
     document.body.removeChild(comp.$el)
     comp.$destroy()
   }
-  
-  return comp
 
+  return comp
 }

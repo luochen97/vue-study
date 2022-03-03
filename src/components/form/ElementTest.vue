@@ -17,29 +17,28 @@ export default {
   data() {
     return {
       userInfo: {
-        username: "",
-        password: ""
+        username: '',
+        password: ''
       },
       rules: {
-        username: [{ required: true, message: "请输入用户名称" }],
-        password: [{ required: true, message: "请输入密码" }]
+        username: [{ required: true, message: '请输入用户名称' }],
+        password: [{ required: true, message: '请输入密码' }]
       }
-    };
+    }
   },
   methods: {
     login() {
-      this.$refs["loginForm"].validate(valid => {
+      this.$refs['loginForm'].validate((valid) => {
         if (valid) {
-          alert("submit");
+          alert('submit')
         } else {
-          console.log("error submit!");
-          return false;
+          console.log('error submit!')
+          return false
         }
-      });
+      })
     }
   }
-};
+}
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

@@ -1,19 +1,20 @@
-class NVue{
+class NVue {
   constructor(options) {
     this.$options = options
-    this.$data = typeof options.data === 'function' ? options.data() : options.data
+    this.$data =
+      typeof options.data === 'function' ? options.data() : options.data
     this.$el = options.el
     this.$method = options.methods
     Observe(this.$data)
     proxy(this, '$data')
     proxy(this, '$method')
     // new Compile(this, this.$el)
-    if(this.$el) {
+    if (this.$el) {
       this.$mount(this.$el)
     }
   }
   $mount(el) {
-    this.$el=document.querySelector(el)
+    this.$el = document.querySelector(el)
     const updateComponent = () => {
       const vnode = this.$options.render.call(this, this.$creatElement)
       this._update(vnode)
@@ -21,65 +22,68 @@ class NVue{
     new Watcher(this, updateComponent)
   }
 
-  $creatElement(tag,data,children) {
-    return {tag,data,children}
+  $creatElement(tag, data, children) {
+    return { tag, data, children }
   }
 
   _update(vnode) {
     const preVnode = this._vnode
-    if(!preVnode) {
+    if (!preVnode) {
       // init
-      this._patch_(this.$el,vnode)
+      this._patch_(this.$el, vnode)
     } else {
       // update
-      this._patch_(preVnode,vnode)
+      this._patch_(preVnode, vnode)
     }
     this._vnode = vnode
   }
 
-  _patch_(preVnode, vnode){
-    if(preVnode.nodeType) {
+  _patch_(preVnode, vnode) {
+    if (preVnode.nodeType) {
       // 新增
       const parent = preVnode.parentElement
       const nextElem = preVnode.nextSibling
       const el = this._creatElement(vnode)
-      parent.appendChild(el,nextElem)
+      parent.appendChild(el, nextElem)
       parent.removeChild(preVnode)
     } else {
-      const el = vnode.el =  preVnode.el 
-      if(typeof vnode.children === 'string') {
-        if(typeof preVnode.children === 'string') {
-          if(preVnode.children!==vnode.children) {
+      const el = (vnode.el = preVnode.el)
+      if (typeof vnode.children === 'string') {
+        if (typeof preVnode.children === 'string') {
+          if (preVnode.children !== vnode.children) {
             el.textContent = vnode.children
           }
         } else {
           el.textContent = vnode.children
         }
       } else {
-        if(typeof preVnode.children === 'string') {
+        if (typeof preVnode.children === 'string') {
           el.innerHTML = ''
-          vnode.children.forEach(v => {
+          vnode.children.forEach((v) => {
             el.appendChild(this._creatElement(v))
           })
         } else {
-          if(preVnode.tag === vnode.tag) {
+          if (preVnode.tag === vnode.tag) {
             // 比较props todo
-            const minLen=Math.min(preVnode.children.length,vnode.children.length)
-            for(var i = 0;i<minLen;i++){
-              this._patch_(preVnode.children[i],vnode.children[i])
+            const minLen = Math.min(
+              preVnode.children.length,
+              vnode.children.length
+            )
+            for (var i = 0; i < minLen; i++) {
+              this._patch_(preVnode.children[i], vnode.children[i])
             }
-            if(preVnode.children.length>vnode.children.length) {
-              preVnode.children.slice(i).forEach(v => {
+            if (preVnode.children.length > vnode.children.length) {
+              preVnode.children.slice(i).forEach((v) => {
                 el.removeChild(v.el)
               })
-            } else if(preVnode.children.length<vnode.children.length) {
-              vnode.children.slice(i).forEach(v => {
+            } else if (preVnode.children.length < vnode.children.length) {
+              vnode.children.slice(i).forEach((v) => {
                 el.appendChild(this._creatElement(v))
               })
             }
           } else {
             el.innerHTML = ''
-            this._patch_(el,vnode)
+            this._patch_(el, vnode)
           }
         }
       }
@@ -88,10 +92,10 @@ class NVue{
 
   _creatElement(vnode) {
     const el = document.createElement(vnode.tag)
-    if(typeof vnode.children === 'string') {
+    if (typeof vnode.children === 'string') {
       el.textContent = vnode.children
     } else {
-      vnode.children.forEach(v => {
+      vnode.children.forEach((v) => {
         el.appendChild(this._creatElement(v))
       })
     }
@@ -100,59 +104,58 @@ class NVue{
   }
 }
 
-class Compile{
+class Compile {
   constructor(vm, el) {
     this.vm = vm
     this.rootNode = document.querySelector(el)
     this.initNode(this.rootNode.childNodes)
   }
   initNode(childNodes) {
-    for(let node of childNodes) {
+    for (let node of childNodes) {
       // nodeType 1:元素 3 文本
-      if(node.nodeType === 1) {
+      if (node.nodeType === 1) {
         // 获取node节点所有属性，判断是否有动态属性
         // 继续判断子节点
         const attrs = node.attributes
-        Array.from(attrs).forEach(attr => {
-          if(attr.name.startsWith('n-')) {
+        Array.from(attrs).forEach((attr) => {
+          if (attr.name.startsWith('n-')) {
             const key = attr.name.substring(2)
-            if(key === 'model') {
-              node.addEventListener('input', e => {
+            if (key === 'model') {
+              node.addEventListener('input', (e) => {
                 this.vm[attr.value] = e.target.value
               })
             }
-            this.update(node,this.vm[attr.value], key, attr.value)
-          }else if(attr.name.startsWith('@')) {
-            node.addEventListener(attr.name.substring(1), e=> {
+            this.update(node, this.vm[attr.value], key, attr.value)
+          } else if (attr.name.startsWith('@')) {
+            node.addEventListener(attr.name.substring(1), (e) => {
               this.vm[attr.valu].bind(this.vm)(e)
             })
           }
         })
-        if(node.childNodes.length) {
+        if (node.childNodes.length) {
           this.initNode(node.childNodes)
         }
-      } else if(node.nodeType === 3) {
+      } else if (node.nodeType === 3) {
         // 判断是否是模版形式{{counter}}
-        if(/\{\{(.*)\}\}/.test(node.textContent)) {
-            const keys = RegExp.$1.split('.')
-            const len = keys.length
-            let i = 1
-            let value = this.vm[keys[0]]
-            while(i < len) {
-              value = value[keys[i]]
-              i++
-            }
-            this.update(node, value, 'text', RegExp.$1)
+        if (/\{\{(.*)\}\}/.test(node.textContent)) {
+          const keys = RegExp.$1.split('.')
+          const len = keys.length
+          let i = 1
+          let value = this.vm[keys[0]]
+          while (i < len) {
+            value = value[keys[i]]
+            i++
+          }
+          this.update(node, value, 'text', RegExp.$1)
         }
-         
-      } 
+      }
     }
   }
   update(node, val, key, keyword) {
-    const fn = this[key+'Updater']
-    console.log(key+'Updater')
-    fn && fn(node,val)
-    new Watcher(this.vm, keyword, val => fn(node, val))
+    const fn = this[key + 'Updater']
+    console.log(key + 'Updater')
+    fn && fn(node, val)
+    new Watcher(this.vm, keyword, (val) => fn(node, val))
   }
   textUpdater(node, val) {
     node.textContent = val
@@ -163,35 +166,43 @@ class Compile{
   modelUpdater(node, val) {
     node.value = val
   }
-  showUpdater(node, val){
+  showUpdater(node, val) {
     const text = val ? 'display: block;background: #ff0' : 'display:none'
     node.style.cssText = text
   }
 }
 // 数据做一层代理
 function proxy(vm, data) {
-  Object.keys(vm[data]).forEach(key => {
-    Object.defineProperty(vm,key, {
-        get() {
-          return vm[data][key]
-        },
-        set(val) {
-          vm[data][key] = val
-        }
+  Object.keys(vm[data]).forEach((key) => {
+    Object.defineProperty(vm, key, {
+      get() {
+        return vm[data][key]
+      },
+      set(val) {
+        vm[data][key] = val
+      }
     })
   })
 }
 // 初始化为data设置响应式
 function Observe(data) {
-  if(isNoObject(data)) return
+  if (isNoObject(data)) return
   // 如果是对象，区分数组和对象
-  if(Array.isArray(data)) {
+  if (Array.isArray(data)) {
     // 数组时，在原型前建立一层拦截器
     const arrayProto = Array.prototype
-    const arrayProtoNew = ['push','pop','shift','unshift','splice','sort','reverse'].forEach(method => {
-        arrayProto[method].apply(this)
-        // 1.在这里进行依赖收集
-        // 2.对新增数据增加响应式效果
+    const arrayProtoNew = [
+      'push',
+      'pop',
+      'shift',
+      'unshift',
+      'splice',
+      'sort',
+      'reverse'
+    ].forEach((method) => {
+      arrayProto[method].apply(this)
+      // 1.在这里进行依赖收集
+      // 2.对新增数据增加响应式效果
     })
     Object.setPrototypeOf(data, arrayProtoNew)
   } else {
@@ -200,8 +211,8 @@ function Observe(data) {
   }
 }
 function walk(obj) {
-  Object.keys(obj).forEach(key => {
-    defineReactive(obj,key,obj[key])
+  Object.keys(obj).forEach((key) => {
+    defineReactive(obj, key, obj[key])
   })
 }
 function defineReactive(target, key, val) {
@@ -213,10 +224,10 @@ function defineReactive(target, key, val) {
       /**
        * 1.收集依赖
        * 2.返回对应的值
-      */
+       */
       console.log(`${key}:${val}`)
       // 收集依赖
-      Dep.target&&dep.addDeps(Dep.target)
+      Dep.target && dep.addDeps(Dep.target)
       return val
     },
     set(newValue) {
@@ -224,14 +235,14 @@ function defineReactive(target, key, val) {
        * 1.如果新值和旧值不一样，保存新值
        * 2.对新值增加响应式
        * 3.通知依赖更新视图
-      */
-     if(val != newValue) {
+       */
+      if (val != newValue) {
         // console.log(`正在设置${key}:${newValue}`)
         val = newValue
         Observe(newValue)
         // 待做通知依赖更新视图
         dep.notify()
-     }
+      }
     }
   })
 }
@@ -240,7 +251,7 @@ function isNoObject(obj) {
   return typeof obj !== 'object' || obj == null
 }
 // 依赖管理类
-class Dep{
+class Dep {
   constructor() {
     this.deps = []
   }
@@ -248,13 +259,13 @@ class Dep{
     this.deps.push(dep)
   }
   notify() {
-    for(let dep of this.deps) {
-       dep.update()
+    for (let dep of this.deps) {
+      dep.update()
     }
   }
 }
 // 监听器类
-class Watcher{
+class Watcher {
   constructor(vm, updater) {
     this.vm = vm
     // this.key = key
@@ -267,11 +278,12 @@ class Watcher{
     Dep.target = null
   }
   getter(key) {
-    if(key.includes('.')) {
+    if (key.includes('.')) {
       const params = key.split('.')
-      let value=this.vm[params[0]],i = 1
+      let value = this.vm[params[0]],
+        i = 1
       const len = params.length
-      while(i < len) {
+      while (i < len) {
         value = value[params[i]]
         i++
       }

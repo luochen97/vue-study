@@ -1,9 +1,9 @@
 let Vue
 /* getters
  * 遍历getters数组，为getters的每一个keys设置
- * 
-*/
-class Store{
+ *
+ */
+class Store {
   constructor(options) {
     this._mutations = options.mutations
     this._actions = options.actions
@@ -19,7 +19,7 @@ class Store{
         get: () => this._vm[key]
       })
     }
-    Object.keys(options.getters).forEach(key => {
+    Object.keys(options.getters).forEach((key) => {
       registerGetter(options.getters[key], key)
     })
     this._vm = new Vue({
@@ -37,21 +37,20 @@ class Store{
     return this._vm._data.$$state
   }
   set state(v) {
-    console.error("请用commit||dispatch来改变！")
+    console.error('请用commit||dispatch来改变！')
     return
   }
   commit(type, keyword) {
-    const mutation =  this._mutations[type]
-    if(mutation) {
+    const mutation = this._mutations[type]
+    if (mutation) {
       mutation(this.state, keyword)
     }
-    
   }
   dispatch(type, keyword) {
-     const action = this._actions[type]
-     if(action) {
+    const action = this._actions[type]
+    if (action) {
       action(this, keyword)
-     }
+    }
   }
 }
 function install(_Vue) {
@@ -65,4 +64,4 @@ function install(_Vue) {
     }
   })
 }
-export default {Store, install}
+export default { Store, install }

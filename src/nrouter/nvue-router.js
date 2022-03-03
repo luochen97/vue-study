@@ -1,49 +1,48 @@
-
 import view from './views'
 let vue
-class VueRouter{
-    constructor(options) {
-      this.options = options
+class VueRouter {
+  constructor(options) {
+    this.options = options
+    this.current = window.location.hash.slice(1)
+    // vue.util.defineReactive(this,'current', window.location.hash.slice(1))
+    vue.util.defineReactive(this, 'matched', [])
+    this.match()
+    window.addEventListener('hashchange', () => {
       this.current = window.location.hash.slice(1)
-      // vue.util.defineReactive(this,'current', window.location.hash.slice(1))
-      vue.util.defineReactive(this,'matched', [])
+      this.matched = []
       this.match()
-      window.addEventListener('hashchange',() => {
-        this.current = window.location.hash.slice(1)
-        this.matched = []
-        this.match()
-      })
-    }
-    match(routes) {
-      const routeArr = routes || this.options.routes
-      for(let route of routeArr) {
-        if(route.path === '/' && this.current === '/') {
-          this.matched.push(route) 
-          return
+    })
+  }
+  match(routes) {
+    const routeArr = routes || this.options.routes
+    for (let route of routeArr) {
+      if (route.path === '/' && this.current === '/') {
+        this.matched.push(route)
+        return
+      }
+      if (route.path !== '/' && this.current.includes(route.path)) {
+        console.log(route, this.current)
+        this.matched.push(route)
+        if (route.children && route.children.length) {
+          this.match(route.children)
         }
-        if(route.path !== '/' && this.current.includes(route.path)) {
-          console.log(route, this.current)
-          this.matched.push(route)
-          if(route.children&&route.children.length) {
-            this.match(route.children)
-          }
-          return
-        }
+        return
       }
     }
-    push(obj) {
-      if(!Object.keys(obj).length) {
-        throw Error('argumnents must be Object!') 
-      }
-      window.location.hash= obj.path
-      this.match()
+  }
+  push(obj) {
+    if (!Object.keys(obj).length) {
+      throw Error('argumnents must be Object!')
     }
+    window.location.hash = obj.path
+    this.match()
+  }
 }
-VueRouter.install = function(_vue) {
+VueRouter.install = function (_vue) {
   vue = _vue
   vue.mixin({
     beforeCreate() {
-      if(this.$options.router) {
+      if (this.$options.router) {
         vue.prototype.$router = this.$options.router
       }
     }
@@ -56,7 +55,7 @@ VueRouter.install = function(_vue) {
       }
     },
     render(h) {
-      return h('a',{attrs: {href: `#${this.to}`}}, this.$slots.default)
+      return h('a', { attrs: { href: `#${this.to}` } }, this.$slots.default)
     }
   })
   vue.component('router-view', view)

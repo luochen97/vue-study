@@ -18,49 +18,47 @@
 </template>
 
 <script>
-import ElementTest from "@/components/form/ElementTest.vue";
-import KInput from "@/components/form/KInput.vue";
-import KFormItem from "@/components/form/KFormItem.vue";
-import KForm from "@/components/form/KForm.vue";
-
-
+// import ElementTest from '@/components/form/ElementTest.vue'
+import KInput from '@/components/form/KInput.vue'
+import KFormItem from '@/components/form/KFormItem.vue'
+import KForm from '@/components/form/KForm.vue'
 
 export default {
   components: {
-    ElementTest,
+    // ElementTest,
     KInput,
     KFormItem,
-    KForm,
+    KForm
   },
   data() {
     return {
       model: {
-        username: "tom",
-        password: "",
+        username: 'tom',
+        password: ''
       },
       rules: {
-        username: [{ required: true, message: "用户名为必填项" }],
-        password: [{ required: true, message: "密码为必填项" }],
-      },
-    };
+        username: [{ required: true, message: '用户名为必填项' }],
+        password: [{ required: true, message: '密码为必填项' }]
+      }
+    }
   },
   methods: {
     onLogin() {
       this.$refs.loginForm.validate((isValidate) => {
         if (isValidate) {
           // 通过
-          console.log("submit login");
+          console.log('submit login')
         } else {
           this.$notice({
-            title: "社会你杨哥喊你来搬砖",
-            message: "校验失败!",
-            duration: 2000,
+            title: '社会你杨哥喊你来搬砖',
+            message: '校验失败!',
+            duration: 2000
           })
         }
-      });
-    },
-  },
-};
+      })
+    }
+  }
+}
 </script>
 
 <style scoped></style>

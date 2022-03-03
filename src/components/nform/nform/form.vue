@@ -1,12 +1,12 @@
 <template>
-    <div>
-      <slot></slot>
-    </div>
+  <div>
+    <slot></slot>
+  </div>
 </template>
 <script>
 export default {
   name: 'nForm',
-  provide(){
+  provide() {
     return {
       form: this
     }
@@ -22,8 +22,12 @@ export default {
   },
   methods: {
     validate(callBack) {
-      const validateArr = this.$children.filter(child => child.prop).map(child => child.validate())
-      Promise.all(validateArr).then(() => callBack(true)).catch(() => callBack(false))
+      const validateArr = this.$children
+        .filter((child) => child.prop)
+        .map((child) => child.validate())
+      Promise.all(validateArr)
+        .then(() => callBack(true))
+        .catch(() => callBack(false))
     }
   }
 }

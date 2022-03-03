@@ -1,6 +1,6 @@
 // 实现一个插件
 // 实现Store
-let Vue;
+let Vue
 
 class Store {
   constructor(options) {
@@ -24,7 +24,6 @@ class Store {
     this.dispatch = this.dispatch.bind(this)
 
     // getters
-    
   }
 
   get state() {
@@ -32,7 +31,7 @@ class Store {
   }
 
   set state(v) {
-    console.error('请使用replaceState重置状态');
+    console.error('请使用replaceState重置状态')
   }
 
   // 修改状态，commit('add', payload)
@@ -40,9 +39,9 @@ class Store {
     // 1.根据type获取mutation
     const mutation = this._mutations[type]
 
-    if(!mutation) {
-      console.error('mutation不存在');
-      return 
+    if (!mutation) {
+      console.error('mutation不存在')
+      return
     }
 
     mutation(this.state, payload)
@@ -52,17 +51,16 @@ class Store {
   dispatch(type, payload) {
     const action = this._actions[type]
 
-    if(!action) {
-      console.error('action不存在');
-      return 
+    if (!action) {
+      console.error('action不存在')
+      return
     }
 
     action(this, payload)
   }
-
 }
 function install(_Vue) {
-  Vue = _Vue;
+  Vue = _Vue
 
   // 注册$store
   Vue.mixin({
@@ -75,4 +73,4 @@ function install(_Vue) {
 }
 
 // 现在导出的就是Vuex
-export default { Store, install };
+export default { Store, install }

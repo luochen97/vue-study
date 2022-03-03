@@ -13,23 +13,23 @@ export default {
   props: {
     value: {
       type: String,
-      required: true,
+      required: true
     },
     type: {
       type: String,
-      default: "text",
-    },
+      default: 'text'
+    }
   },
   methods: {
     onInput(e) {
-      this.$emit("input", e.target.value);
+      this.$emit('input', e.target.value)
 
       // 通知校验
       this.$parent.$emit('validate')
       // this.dispatch('kformitem', 'validate')
-    },
-  },
-};
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped></style>

@@ -9,33 +9,33 @@ export default {
   props: {
     title: {
       type: String,
-      default: "",
+      default: ''
     },
     message: {
       type: String,
-      default: "",
+      default: ''
     },
     duration: {
       type: Number,
-      default: 1000,
-    },
+      default: 1000
+    }
   },
   data() {
     return {
-      isShow: false,
-    };
+      isShow: false
+    }
   },
   methods: {
     show() {
-      this.isShow = true;
-      setTimeout(this.hide, this.duration);
+      this.isShow = true
+      setTimeout(this.hide, this.duration)
     },
     hide() {
-      this.isShow = false;
-      this.remove();
-    },
-  },
-};
+      this.isShow = false
+      this.remove()
+    }
+  }
+}
 </script>
 <style>
 .box {

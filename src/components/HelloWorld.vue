@@ -13,10 +13,10 @@
 </template>
 
 <script>
-import Communication from '@/components/communication';
-import FormExample from '@/components/form';
-import SlotExample from '@/components/slots';
-import TreeExample from '@/components/recursion';
+// import Communication from '@/components/communication'
+import FormExample from '@/components/form'
+// import SlotExample from '@/components/slots'
+// import TreeExample from '@/components/recursion'
 
 export default {
   name: 'HelloWorld',
@@ -24,11 +24,11 @@ export default {
     msg: String
   },
   components: {
-    Communication,
-    FormExample,
-    SlotExample,
-    TreeExample
-  },
+    // Communication,
+    FormExample
+    // SlotExample,
+    // TreeExample
+  }
 }
 </script>
 
