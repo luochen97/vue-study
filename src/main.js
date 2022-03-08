@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import App from './App.vue'
 import './plugins/element.js'
-
 // import router from './router'
 import router from './nrouter'
 
@@ -10,7 +9,8 @@ import store from './nstore'
 
 import create from '@/utils/create'
 import Notice from '@/components/Notice.vue'
-import { NElement } from '@/components/nform/index.js'
+import NElement from '@/components/nform/index.js'
+import VueI18n from './lang'
 
 Vue.config.productionTip = false
 // 事件总线
@@ -21,7 +21,9 @@ Vue.prototype.$notice = function (props) {
   notice.show()
 }
 Vue.use(NElement)
+
 new Vue({
+  i18n: VueI18n,
   router,
   store,
   render: (h) => h(App)

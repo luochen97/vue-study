@@ -23,7 +23,26 @@
         <button @click="validate">校验</button>
       </nFormItem>
     </nForm>
-
+    <!-- VueI18n -->
+    <el-dropdown
+      trigger="click"
+      class="international"
+      @command="handleSetLanguage"
+    >
+      <div>
+        <i class="el-icon-s-tools" />
+        切换语言 {{ language }}
+      </div>
+      <el-dropdown-menu slot="dropdown">
+        <el-dropdown-item :disabled="language === 'en'" command="en">
+          英文
+        </el-dropdown-item>
+        <el-dropdown-item :disabled="language === 'ja'" command="ja">
+          ja
+        </el-dropdown-item>
+      </el-dropdown-menu>
+    </el-dropdown>
+    <p>{{ $t('message.hello') }}</p>
     <!-- <p @click="$store.commit('add')">{{ $store.state.counter }}</p>
     <p @click="$store.dispatch('add')">async:{{ $store.state.counter }}</p> -->
     <!-- <p>{{ $store.getters.doubleCounter }}</p> -->
@@ -39,6 +58,7 @@ export default {
     return {
       num: 1,
       input: '',
+      language: this.$i18n.locale,
       formData: {
         userName: ''
       },
@@ -61,6 +81,11 @@ export default {
     }
   },
   methods: {
+    handleSetLanguage(command) {
+      this.$i18n.locale = command
+      this.language = command
+      localStorage.setItem('lang', command)
+    },
     validateUser(rule, value, callBack) {
       if (!/^\d*$/.test(value)) {
         callBack('用户名必须为数字')
